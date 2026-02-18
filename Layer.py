@@ -1,4 +1,4 @@
-from Vector2 import Vector2
+from util.Vector2 import Vector2
 import math
 
 CHAR_PER_RANGE = 8
@@ -16,9 +16,6 @@ class Layer:
             for _ in range(sizeX):
                 row.append(None)
     
-    """
-    Clears the layer
-    """
     def clear(self):
         for row in self.grid:
             for column in range(len(row)):
@@ -33,6 +30,9 @@ class Layer:
 
         return(x > 0 or x < size.x) or (y > 0 or y < size.y)
 
+    """
+    Safely retrieves an object
+    """
     def get_object(self, position:Vector2):
         if not self.in_bounds(position):
             return None
@@ -49,11 +49,17 @@ class Layer:
             object.object_spawned(self, x, y)
 
         return True
-    
+
+    """
+    Takes a list of Vector2, sets the positions in the grid to None
+    """    
     def clear_positions(self, position_list):
         for position in position_list:
             self.grid[position[1]][position[0]] = None
 
+    """
+    Draws a circle on the grid, returns a list of positions where the single pixels were placed.
+    """
     def place_circle(self, object, centerX, centerY, circle_range):
         placed_positions = []
 

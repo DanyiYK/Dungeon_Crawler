@@ -1,13 +1,12 @@
-import os
+from util.Vector2 import Vector2
 from Layer import Layer
-from time import sleep
 
 EMPTY_CELL = "."
 
 class Map:
-    def __init__(self, sizeX, sizeY):
-        self.game_layer = Layer(sizeX, sizeY)
-        self.effect_layer = Layer(sizeX, sizeY)
+    def __init__(self, size:Vector2):
+        self.game_layer = Layer(size)
+        self.effect_layer = Layer(size)
 
         # Layer rendering priority
         self.layers = [
@@ -33,7 +32,5 @@ class Map:
 
         return EMPTY_CELL
     
-
-
-
-x = Map(20, 20)
+if __name__=="__main__":
+    x = Map(20, 20)
