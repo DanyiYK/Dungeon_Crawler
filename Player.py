@@ -1,6 +1,13 @@
 from Entity import Entity
 from util.Vector2 import Vector2
 
+# TODO:
+# Class choice (Warrior, Mage, Thief)
+# Nice to have: Abilities
+# Thief: Steal objects
+# Mage: Fireball
+# Warrior: Slash
+
 PLAYER_START_HEALTH = 100
 
 class Player(Entity):
