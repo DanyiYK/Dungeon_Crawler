@@ -1,12 +1,14 @@
 from util.Vector2 import Vector2
 from Layer import Layer
+from Object import Object
+from Entity import Entity
 
 EMPTY_CELL = "."
 
 class Map:
     def __init__(self, size:Vector2):
-        self.game_layer = Layer(size)
-        self.effect_layer = Layer(size)
+        self.game_layer = Layer(self, size)
+        self.effect_layer = Layer(self, size)
 
         # Layer rendering priority
         self.layers = [

@@ -1,3 +1,5 @@
+from Object import Object
+from Entity import Entity
 from util.Vector2 import Vector2
 import math
 
@@ -5,15 +7,16 @@ CHAR_PER_RANGE = 8
 FULL_CIRCLE = 2*math.pi
 
 class Layer:
-    def __init__(self, sizeX, sizeY):
+    def __init__(self, parent, size:Vector2):
         self.grid = []
-        self.size = Vector2(sizeX, sizeY)
+        self.size = size
+        self.parent = parent
 
-        for _ in range(sizeY):
+        for _ in range(size.y):
             row = []
             self.grid.append(row)
             
-            for _ in range(sizeX):
+            for _ in range(size.x):
                 row.append(None)
     
     def clear(self):
@@ -28,7 +31,7 @@ class Layer:
         size = self.size
         x, y = position.x, position.y
 
-        return(x > 0 or x < size.x) or (y > 0 or y < size.y)
+        return (x >= 0 and x < size.x) and (y >= 0 and y < size.y)
 
     """
     Safely retrieves an object
@@ -38,15 +41,19 @@ class Layer:
             return None
         
         return self.grid[position.y][position.x]
-
-    def place_object(self, object, x, y):
-        if not self.in_bounds(Vector2(x, y)):
+    
+    def place_object(self, object, position):
+        if not self.in_bounds(position):
             return False
         
-        self.grid[y][x] = object
+        last_object = self.grid[position.y][position.x]
+        
+        if isinstance(last_object, Object) and isinstance(object, Entity):
+            last_object.use(self.parent, object, position)
+        elif last_object != None:
+            return False
 
-        if not isinstance(object, str):
-            object.object_spawned(self, x, y)
+        self.grid[position.y][position.x] = object
 
         return True
 
@@ -64,13 +71,13 @@ class Layer:
         placed_positions = []
 
         circle_char_count = circle_range*CHAR_PER_RANGE
-        for x in range(circle_char_count):
-            rad = FULL_CIRCLE * x/circle_char_count
+        for i in range(circle_char_count):
+            rad = FULL_CIRCLE * i/circle_char_count
             
             x = round(math.cos(rad)*circle_range) + centerX
             y = round(math.sin(rad)*circle_range) + centerY
 
-            placed = self.place_object(object, x, y)
+            placed = self.place_object(object, Vector2(x, y)) #self.parent.place_object(object, Vector2(x, y))
 
             if placed:
                 placed_positions.append([x, y])

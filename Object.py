@@ -1,5 +1,5 @@
-from Map import Map
 from time import sleep
+from util.Vector2 import Vector2
 
 BOMB_ANIMATION_TIME = 1 # Seconds
 
@@ -7,42 +7,51 @@ BOMB_ANIMATION_TIME = 1 # Seconds
 Blank object class
 """
 class Object:
-    def __init__(self):
-        pass
+    def __init__(self, char="?"):
+        self.char = char
 
     def __repr__(self):
-        return "?"
+        return self.char
 
-    def object_spawned(self, x, y):
+    def object_spawned(self, position:Vector2):
         pass
 
-    def use(self, map:Map, Player):
+    def use(self, map, entity, position:Vector2):
         pass
 
 class Bomb(Object):
     def __init__(self):
-        super().__init__()
+        super().__init__("b")
         
-        self.damage = 10
-        self.explosion_radius = 5
-    
-    def play_animation(self, map:Map, x, y):
+        self.damage = 55
+        self.explosion_radius = 6
+
+    def play_animation(self, map, position:Vector2):
         effect_layer = map.effect_layer
+        x, y = position.x, position.y
         last_placed = []
 
         for i in range(self.explosion_radius):
-            last_placed.clear()
-
             last_placed.append(effect_layer.place_circle(i%2==0 and "%" or "@", x, y, i))
-            last_placed.append(effect_layer.place_circle(i%2==0 and "-" or "|", x, y, i-2))
+            last_placed.append(effect_layer.place_circle(i%2==0 and "*" or "+", x, y, i-2))
+            
+            print("KABOOM!")
+            print(effect_layer.parent)
 
             sleep(BOMB_ANIMATION_TIME/self.explosion_radius)
 
             for lp in last_placed:
                 effect_layer.clear_positions(lp)
+            
+            last_placed.clear()
+        
+        effect_layer.clear_positions(lp)
 
-    def use(self, map:Map, Player, x, y):
-        self.play_animation(map, x, y)
+    def use(self, map, entity, position:Vector2):
+        self.play_animation(map, position)
 
-        Player.take_damage(self.damage)
-    
+        entity.take_damage(self.damage, Bomb.__name__)
+
+        sleep(.25)
+        
+        print(map)
