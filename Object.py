@@ -7,7 +7,8 @@ BOMB_ANIMATION_TIME = 1 # Seconds
 Blank object class
 """
 class Object:
-    def __init__(self, char="?"):
+    def __init__(self, char="?", destroy_on_use = True):
+        self.destroy_on_use = destroy_on_use
         self.char = char
 
     def __repr__(self):
@@ -19,11 +20,20 @@ class Object:
     def use(self, map, entity, position:Vector2):
         pass
 
+class Exit(Object):
+    def __init__(self):
+        super().__init__("E", False)
+
+        self.Used = False
+    
+    def use(self, map, entity, position:Vector2):
+        self.Used = True
+
 class Bomb(Object):
     def __init__(self):
         super().__init__("b")
         
-        self.damage = 55
+        self.damage = 20
         self.explosion_radius = 6
 
     def play_animation(self, map, position:Vector2):

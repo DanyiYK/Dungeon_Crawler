@@ -1,6 +1,6 @@
 from Map import Map
 from Player import Player
-from Object import Bomb
+from Object import Exit, Bomb
 from util.Bar import Bar
 from util.Vector2 import Vector2
 
@@ -18,11 +18,14 @@ new_map = Map(MAP_SIZE)
 player = Player(new_map, "Carlo")
 hp_bar = Bar("Player HP", player.max_health)
 
+exit = Exit()
+
+new_map.game_layer.place_object(exit, Vector2(9, 9))
 new_map.game_layer.place_object(Bomb(), Vector2(1, 0))
 new_map.game_layer.place_object(Bomb(), Vector2(2, 6))
 new_map.game_layer.place_object(Bomb(), Vector2(5, 4))
 
-while running and player.health>0:
+while not exit.Used and player.health>0:
     print(new_map)
     print(hp_bar.render(player.health))
 
@@ -36,5 +39,13 @@ while running and player.health>0:
     if direction:
         player.move_rel(direction)
 
-print("SEI MORTO!")
+if player.health<=0:
+    print("SEI MORTO!")
+elif exit.Used:
+    print("Sei uscito")
+
+print(new_map)
 print(hp_bar.render(player.health))
+
+
+input()

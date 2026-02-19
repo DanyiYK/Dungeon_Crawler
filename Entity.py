@@ -31,11 +31,11 @@ class Entity:
             return
 
         last_position = self.position
-        self.position = new_position
 
         # Clear past position in grid
-        self.layer.grid[last_position.y][last_position.x] = None
-        self.map.game_layer.place_object(self, new_position)
+        if self.map.game_layer.place_object(self, new_position):
+            self.layer.grid[last_position.y][last_position.x] = None
+            self.position = new_position
 
     def move_rel(self, position):
         abs_pos = self.position + position

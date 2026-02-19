@@ -50,6 +50,10 @@ class Layer:
         
         if isinstance(last_object, Object) and isinstance(object, Entity):
             last_object.use(self.parent, object, position)
+
+            if not last_object.destroy_on_use:
+                return False
+            
         elif last_object != None:
             return False
 
