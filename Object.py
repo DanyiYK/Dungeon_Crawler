@@ -22,7 +22,7 @@ class Object:
 
 class Exit(Object):
     def __init__(self):
-        super().__init__("e", False)
+        super().__init__("E", False)
 
         self.Used = False
     
@@ -31,18 +31,27 @@ class Exit(Object):
 
 class HealPotion(Object):
     def __init__(self):
-        super().__init__("p")
+        super().__init__("+")
 
         self.heal = 25
 
     def use(self, map, entity, position:Vector2):
         entity.take_damage(-self.heal)
 
+class Trap(Object):
+    def __init__(self):
+        super().__init__("X")
+
+        self.damage = 15
+
+    def use(self, map, entity, position:Vector2):
+        entity.take_damage(self.damage)
+
 class Bomb(Object):
     def __init__(self):
         super().__init__("b")
         
-        self.damage = 20
+        self.damage = 45
         self.explosion_radius = 6
 
     def play_animation(self, map, position:Vector2):
