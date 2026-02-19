@@ -22,12 +22,21 @@ class Object:
 
 class Exit(Object):
     def __init__(self):
-        super().__init__("E", False)
+        super().__init__("e", False)
 
         self.Used = False
     
     def use(self, map, entity, position:Vector2):
         self.Used = True
+
+class HealPotion(Object):
+    def __init__(self):
+        super().__init__("p")
+
+        self.heal = 25
+
+    def use(self, map, entity, position:Vector2):
+        entity.take_damage(-self.heal)
 
 class Bomb(Object):
     def __init__(self):

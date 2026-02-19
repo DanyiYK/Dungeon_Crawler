@@ -1,6 +1,6 @@
 from Map import Map
 from Player import Player
-from Object import Exit, Bomb
+from Object import Exit, Bomb, HealPotion
 from util.Bar import Bar
 from util.Vector2 import Vector2
 
@@ -23,7 +23,8 @@ exit = Exit()
 new_map.game_layer.place_object(exit, Vector2(9, 9))
 new_map.game_layer.place_object(Bomb(), Vector2(1, 0))
 new_map.game_layer.place_object(Bomb(), Vector2(2, 6))
-new_map.game_layer.place_object(Bomb(), Vector2(5, 4))
+new_map.game_layer.place_object(HealPotion(), Vector2(6, 8))
+new_map.game_layer.place_object(HealPotion(), Vector2(10, 2))
 
 while not exit.Used and player.health>0:
     print(new_map)
