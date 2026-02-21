@@ -21,11 +21,17 @@ class Entity:
         self.map = map
         self.layer = game_layer
         
-        map.game_layer.place_object(self, self.position)
+        map.game_layer.place_object(self, position)
 
     def __repr__(self):
         return self.char
     
+    def set_maxhealth(self, new_maxhealth):
+        old_maxhealth = self.max_health
+
+        self.max_health = new_maxhealth
+        self.health = old_maxhealth==self.health and new_maxhealth or self.health
+
     def move_abs(self, new_position):
         if not self.layer.in_bounds(new_position):
             return
@@ -54,5 +60,3 @@ class Entity:
 
         if self.health <= 0:
             self.on_death(owner)
-
-

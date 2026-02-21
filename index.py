@@ -1,5 +1,6 @@
+from dungeon import load_dungeon
 from Map import Map
-from Player import Player
+from Player import Player, Warrior, Mage, Thief
 from Object import Exit, Bomb, HealPotion, Trap
 from util.Bar import Bar
 from util.Vector2 import Vector2
@@ -12,28 +13,19 @@ ALLOWED_MOVEMENTS = {
     "s": Vector2(0, 1),
     "d": Vector2(1, 0),
 }
+CHARACTERS = {
+    Warrior: "120 Health, 10 Strength, Special ability: Big slash.",
+    Mage: "80 Health, 50 Mana, Special ability: Fireball.",
+    Thief: "100 Health, 15 Agility, Special ability: Catch & Throw."
+}
 
 running = True
-new_map = Map(MAP_SIZE)
+new_map = load_dungeon("spawn_dungeon")
 
 player = Player(new_map, "Carlo")
 hp_bar = Bar("Player HP", player.max_health)
 
 exit = Exit()
-
-new_map.game_layer.place_object(exit, Vector2(9, 9))
-
-new_map.game_layer.place_object(Bomb(), Vector2(1, 0))
-new_map.game_layer.place_object(Bomb(), Vector2(2, 6))
-
-new_map.game_layer.place_object(HealPotion(), Vector2(6, 8))
-new_map.game_layer.place_object(HealPotion(), Vector2(10, 2))
-
-new_map.game_layer.place_object(Trap(), Vector2(10, 9))
-new_map.game_layer.place_object(Trap(), Vector2(0, 8))
-new_map.game_layer.place_object(Trap(), Vector2(7, 7))
-new_map.game_layer.place_object(Trap(), Vector2(4, 9))
-new_map.game_layer.place_object(Trap(), Vector2(4, 2))
 
 while not exit.Used and player.health>0:
     print(new_map)

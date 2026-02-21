@@ -1,5 +1,7 @@
 from time import sleep
 from util.Vector2 import Vector2
+from Entity import Entity
+from Destroyable import Destroyable
 
 BOMB_ANIMATION_TIME = 1 # Seconds
 
@@ -45,7 +47,7 @@ class Trap(Object):
         self.damage = 15
 
     def use(self, map, entity, position:Vector2):
-        entity.take_damage(self.damage)
+        entity.take_damage(self.damage, self.__class__.__name__)
 
 class Bomb(Object):
     def __init__(self):
@@ -78,7 +80,17 @@ class Bomb(Object):
     def use(self, map, entity, position:Vector2):
         self.play_animation(map, position)
 
-        entity.take_damage(self.damage, Bomb.__name__)
+        # entity.take_damage(self.damage, self.__class__.__name__)
+
+        for y, row in enumerate(map.game_layer.grid):
+            for x, cell_item in enumerate(row):
+                if(position - Vector2(x, y)).magnitude > self.explosion_radius:
+                    continue
+
+                if isinstance(cell_item, Entity):
+                    cell_item.take_damage(self.damage, self.__class__.__name__)
+                elif isinstance(cell_item, Destroyable):
+                    row[x] = None
 
         sleep(.25)
         

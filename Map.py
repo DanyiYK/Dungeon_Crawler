@@ -10,6 +10,8 @@ class Map:
         self.game_layer = Layer(self, size)
         self.effect_layer = Layer(self, size)
 
+        self.player_spawn_point = Vector2(0, 0)
+
         # Layer rendering priority
         self.layers = [
             self.game_layer,
