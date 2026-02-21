@@ -7,6 +7,7 @@ EMPTY_CELL = "."
 
 class Map:
     def __init__(self, size:Vector2):
+        self.size = size
         self.game_layer = Layer(self, size)
         self.effect_layer = Layer(self, size)
 
@@ -19,9 +20,16 @@ class Map:
         ]
 
     def __repr__(self):
-        output = ""
+        output = "- "
+
+        for i in range(self.size.x):
+            i = i < 10 and i or 9
+            output += f"{i} "
+
+        output += "\n"
 
         for y, row in enumerate(self.game_layer.grid):
+            output += f"{y < 10 and y or 9} "
             for x in range(len(row)):
                 output += self._get_char_at_pos(x, y) + " "
             
