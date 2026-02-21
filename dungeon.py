@@ -1,33 +1,33 @@
 import random
 from Map import Map
 from Player import Warrior, Mage, Thief
-from Object import Object, Exit, Bomb, HealPotion, Trap
+from Object import Object, Exit, Bomb, HealPotion, Trap, StrongBomb
+from Destroyable import Wall, DamagedWall
 from util.Bar import Bar
 from util.Vector2 import Vector2
 
 DUNGEON_PATH = "./dungeons/"
 RANDOM_SPAWNABLE = [HealPotion, Trap]
 
+# TODO: Find a better way to parse a map file, lol
+
 def set_spawnpoint(map, position):
     map.player_spawn_point = position
     
     return None
 
-def random_object(map, position):
-    return random.choice(RANDOM_SPAWNABLE)()
-
-def spawn_bomb(map, position):
-    return Bomb()
-
-
 TRANSLATION_TABLE = {
     "-": None,
     "#": "#",
     "/": "/",
+    "|": "|",
     "\\": "\\",
-    "b": spawn_bomb,
+    "0": lambda _, p: StrongBomb(), #spawn_strong_bomb,
+    "E": lambda _, p: Exit(),
+    "b": lambda _, p: Bomb(),
+    "r": lambda _, p: random.choice(RANDOM_SPAWNABLE)(),
+    "d": lambda _, position: position.x%2==0 and Wall() or DamagedWall(),
     "S": set_spawnpoint,
-    "r": random_object
 }
 
 def translate_character(map, position, char):

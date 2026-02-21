@@ -53,8 +53,21 @@ class Bomb(Object):
     def __init__(self):
         super().__init__("b")
         
+        self.damaged_entities = []
         self.damage = 45
         self.explosion_radius = 6
+
+    def damage_near(self, map, position, range):
+        for y, row in enumerate(map.game_layer.grid):
+            for x, cell_item in enumerate(row):
+                if(position - Vector2(x, y)).magnitude() > range:
+                    continue
+
+                if isinstance(cell_item, Entity) and not(cell_item in self.damaged_entities):
+                    cell_item.take_damage(self.damage, self.__class__.__name__)
+                    self.damaged_entities.append(cell_item)
+                elif isinstance(cell_item, Destroyable):
+                    row[x] = None
 
     def play_animation(self, map, position:Vector2):
         effect_layer = map.effect_layer
@@ -65,6 +78,8 @@ class Bomb(Object):
             last_placed.append(effect_layer.place_circle(i%2==0 and "%" or "@", x, y, i))
             last_placed.append(effect_layer.place_circle(i%2==0 and "*" or "+", x, y, i-2))
             
+            self.damage_near(map, position, i)
+
             print("KABOOM!")
             print(effect_layer.parent)
 
@@ -82,16 +97,13 @@ class Bomb(Object):
 
         # entity.take_damage(self.damage, self.__class__.__name__)
 
-        for y, row in enumerate(map.game_layer.grid):
-            for x, cell_item in enumerate(row):
-                if(position - Vector2(x, y)).magnitude > self.explosion_radius:
-                    continue
-
-                if isinstance(cell_item, Entity):
-                    cell_item.take_damage(self.damage, self.__class__.__name__)
-                elif isinstance(cell_item, Destroyable):
-                    row[x] = None
-
         sleep(.25)
         
         print(map)
+
+class StrongBomb(Bomb):
+    def __init__(self):
+        super().__init__()
+
+        self.explosion_radius = 100
+        self.char = "0"

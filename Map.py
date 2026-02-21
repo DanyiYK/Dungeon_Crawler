@@ -35,6 +35,3 @@ class Map:
                 return str(layer.grid[y][x])
 
         return EMPTY_CELL
-    
-if __name__=="__main__":
-    x = Map(20, 20)

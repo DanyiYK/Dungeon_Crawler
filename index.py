@@ -20,12 +20,17 @@ CHARACTERS = {
 }
 
 running = True
-new_map = load_dungeon("spawn_dungeon")
+new_map = load_dungeon("park")
 
 player = Player(new_map, "Carlo")
 hp_bar = Bar("Player HP", player.max_health)
 
-exit = Exit()
+exit = None
+
+for row in new_map.game_layer.grid:
+    for cell in row:
+        if isinstance(cell, Exit):
+            exit = cell
 
 while not exit.Used and player.health>0:
     print(new_map)
@@ -44,7 +49,7 @@ while not exit.Used and player.health>0:
 if player.health<=0:
     print(f"{HEADER}YOU DIED!!{HEADER}")
 elif exit.Used:
-    print(f"{HEADER}\You escaped!\n{HEADER}")
+    print(f"{HEADER}\nYou escaped!\n{HEADER}")
 
 print("Steps:", player.steps)
 

@@ -5,6 +5,10 @@ class Destroyable:
     def __repr__(self):
         return self.char
 
-class Wall:
+class DamagedWall(Destroyable):
     def __init__(self):
-        super().__init__("d")
+        super().__init__("=")
+
+class Wall(Destroyable):
+    def __init__(self):
+        super().__init__("@")
