@@ -13,23 +13,23 @@ class Map:
 
         self.player_spawn_point = Vector2(0, 0)
 
-        # Layer rendering priority
+        # Map layers, in priority order
         self.layers = [
             self.game_layer,
             self.effect_layer
         ]
 
     def __repr__(self):
-        output = "- "
+        output = "_ "
 
         for i in range(self.size.x):
             i = i < 10 and i or 9
-            output += f"{i} "
+            output += f"_ "
 
         output += "\n"
 
         for y, row in enumerate(self.game_layer.grid):
-            output += f"{y < 10 and y or 9} "
+            output += f"| "
             for x in range(len(row)):
                 output += self._get_char_at_pos(x, y) + " "
             

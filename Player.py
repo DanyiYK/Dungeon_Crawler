@@ -44,7 +44,7 @@ class Character(Player):
 
         return True
 
-def Warrior(Character):
+class Warrior(Character):
     def __init__(self, map, name):
         super().__init__(map, name)
 
@@ -53,7 +53,7 @@ def Warrior(Character):
         self.char = "G"
         self.strength = 10
 
-def Mage(Character):
+class Mage(Character):
     def __init__(self, map, name):
         super().__init__(map, name)
 
@@ -62,7 +62,7 @@ def Mage(Character):
         self.char = "M"
         self.mana = 50
 
-def Thief(Character):
+class Thief(Character):
     def __init__(self, map, name):
         super().__init__(map, name)
 

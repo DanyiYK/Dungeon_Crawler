@@ -20,7 +20,7 @@ CHARACTERS = {
 }
 
 running = True
-new_map = load_dungeon("park")
+new_map = load_dungeon("have_fun")
 
 player = Player(new_map, "Carlo")
 hp_bar = Bar("Player HP", player.max_health)
